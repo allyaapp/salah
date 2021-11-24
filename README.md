@@ -1,2 +1,2 @@
 # SugarCane
-Kelompok 1 Gol B
+KELOMPOK 1 GOL B
