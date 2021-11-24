@@ -12,34 +12,32 @@ $sesID = $_SESSION['id'];
 $sesName = $_SESSION['username'];
 $sesLvl = $_SESSION['role'];
 
-            if(isset($_POST['update']) ){
-                $id = $_POST['id_admin'];
-                $nama = $_POST['fullname'];
-                $no_hp = $_POST['no_hp'];
-                $alamat = $_POST['alamat'];
-                $username = $_POST['username'];
-                $password = $_POST['password'];
-                $role = $_POST['role'];
+    if(isset($_POST['update']) ){
+        $id = $_POST['id_barang'];
+        $varian = $_POST['varian'];
+        $ukuran = $_POST['ukuran'];
+        $id_detailukuran = $_POST['id_detailukuran'];
+        $stok = $_POST['stok'];
 
-                $query = "UPDATE admindetail SET fullname='$nama', no_hp='$no_hp', alamat='$alamat', username='$username', password='$password', role='$role' WHERE id_admin='$id'";
-                $result = mysqli_query($koneksi, $query);
-                header('Location: adminhome.php');
-            }
+        $query = "UPDATE barang SET varian='$varian', ukuran='$ukuran', id_detailukuran='$id_detailukuran', stok='$stok' WHERE id_barang='$id'";
+        $result = mysqli_query($koneksi, $query);
+        header('Location: baranghome.php');
+    }
 
-            $id = $_GET['id'];
-            $query = "SELECT * FROM admindetail WHERE id_admin='$id'";
-            $result = mysqli_query($koneksi, $query) or die (mysql_error());
-            $no = 1;
-            while ($row = mysqli_fetch_array($result)){
-                $id = $row['id_admin'];
-                $nama = $row['fullname'];
-                $no_hp = $row['no_hp'];
-                $alamat = $row['alamat'];
-                $username = $row['username'];
-                $password = $row['password'];
-                $role = $row['role'];       
+    $id = $_GET['id'];
+    $query = "SELECT * FROM barang WHERE id_barang='$id'";
+    $result = mysqli_query($koneksi, $query) or die (mysql_error());
+    $no = 1;
+            
+    while ($row = mysqli_fetch_array($result)){
+        $id = $row['id_barang'];
+        $varian = $row['varian'];
+        $ukuran = $row['ukuran'];
+        $id_detailukuran = $row['id_detailukuran'];
+        $stok = $row['stok'];    
 
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -47,7 +45,7 @@ $sesLvl = $_SESSION['role'];
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Edit Admin's Data | SUGAR CANE</title>
+    <title>Edit Products' Data | SUGAR CANE</title>
     <!-- Favicon-->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
@@ -108,9 +106,11 @@ $sesLvl = $_SESSION['role'];
                             <img class="img-profile rounded-circle" src="../images/user.png" width="70%" style="border-radius: 50px;">
                         </a>
                         <!-- Dropdown - User Information -->
-                        <ul class="dropdown-menu" style="border-radius: 5px;">
+                        <ul class="dropdown-menu">
                             <div class="dropdown-divider"></div>
                             <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="../logout.php"><i class="material-icons">input</i>Sign Out</a></li>
                             <div class="dropdown-divider"></div>
                         </ul>
                     </li>
@@ -134,8 +134,8 @@ $sesLvl = $_SESSION['role'];
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                        <li class="active">
-                            <a href="adminhome.php">
+                        <li>
+                            <a href="../admin/adminhome.php">
                                 <i class="material-icons">account_box</i>
                                 <span>Admins</span>
                             </a>
@@ -146,19 +146,19 @@ $sesLvl = $_SESSION['role'];
                                 <span>Users</span>
                             </a>
                         </li>
-                        <li>
+                        <li class="active">
                             <a href="javascript:void(0);" class="menu-toggle">
                                 <i class="material-icons">library_books</i>
                                 <span>Data Barang</span>
                             </a>
                             <ul class="ml-menu">
-                                <li>
-                                    <a href="../barang/baranghome.php">
+                                <li class="active">
+                                    <a href="baranghome.php">
                                         <span>Barang</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="../barang/detailbarang.php">
+                                    <a href="detailbarang.php">
                                         <span>Detail Ukuran</span>
                                     </a>
                                 </li>
@@ -169,18 +169,6 @@ $sesLvl = $_SESSION['role'];
                                 <i class="material-icons">assessment</i>
                                 <span>Transaksi</span>
                             </a>
-                            <ul class="ml-menu">
-                                <li>
-                                    <a href="javascript:void(0);">
-                                        <span>Transaksi Selesai</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0);">
-                                        <span>Transaksi Lain</span>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                     </div>
                 </ul>
@@ -204,54 +192,72 @@ $sesLvl = $_SESSION['role'];
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <h2>EDIT <?php echo $nama; ?>'s DATA</h2>
+                            <h2>EDIT DATA</h2>
                         </div>
                         <div class="body">
-                            <form id="form_validation" method="POST">
+                            <form id="form_validation" method="POST" action="barangedit.php">
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input type="text" class="form-control" name="id_admin" value="<?php echo $id;?>" required>
-                                        <label class="form-label">ID</label>
+                                        <input type="text" class="form-control" name="id_barang" value="<?php echo $id;?>" required>
+                                        <label class="form-label">ID Barang</label>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Varian Rasa</label><br>
+
+                                    <input type="radio" name="varian" id="chocolate" class="with-gap radio-col-light-green" value="Chocolate"<?php if($varian=='Chocolate') echo 'checked'?>>
+                                    <label for="chocolate" class="m-l-20">Chocolate</label><br>
+
+                                    <input type="radio" name="varian" id="strawberry" class="with-gap radio-col-light-green" value="Strawberry"<?php if($varian=='Strawberry') echo 'checked'?>>
+                                    <label for="strawberry" class="m-l-20">Strawberry</label><br>
+
+                                    <input type="radio" name="varian" id="vanillaoreo" class="with-gap radio-col-light-green" value="VanillaOreo"<?php if($varian=='VanillaOreo') echo 'checked'?>>
+                                    <label for="vanillaoreo" class="m-l-20">VanillaOreo</label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Ukuran</label><br>
+
+                                    <input type="radio" name="ukuran" id="Mini" class="with-gap radio-col-light-green" value="Mini"<?php if($ukuran=='Mini') echo 'checked'?>>
+                                    <label for="Mini" class="m-l-20">Mini</label><br>
+
+                                    <input type="radio" name="ukuran" id="Jumbo" class="with-gap radio-col-light-green" value="Jumbo"<?php if($ukuran=='Jumbo') echo 'checked'?>>
+                                    <label for="Jumbo" class="m-l-20">Jumbo</label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">ID Detail Ukuran</label><br>
+
+                                    <input type="radio" name="id_detailukuran" id="M1" class="with-gap radio-col-light-green" value="M1"<?php if($id_detailukuran=='M1') echo 'checked'?>>
+                                    <label for="M1" class="m-l-20">M1</label>
+
+                                    <input type="radio" name="id_detailukuran" id="M2" class="with-gap radio-col-light-green" value="M2"<?php if($id_detailukuran=='M2') echo 'checked'?>>
+                                    <label for="M2" class="m-l-20">M2</label>
+
+                                    <input type="radio" name="id_detailukuran" id="M3" class="with-gap radio-col-light-green" value="M3"<?php if($id_detailukuran=='M3') echo 'checked'?>>
+                                    <label for="M3" class="m-l-20">M3</label>
+
+                                    <input type="radio" name="id_detailukuran" id="J1" class="with-gap radio-col-light-green" value="J1"<?php if($id_detailukuran=='J1') echo 'checked'?>>
+                                    <label for="J1" class="m-l-20">J1</label>
+
+                                    <input type="radio" name="id_detailukuran" id="J2" class="with-gap radio-col-light-green" value="J2"<?php if($id_detailukuran=='J2') echo 'checked'?>>
+                                    <label for="J2" class="m-l-20">J2</label>
+
+                                    <input type="radio" name="id_detailukuran" id="J3" class="with-gap radio-col-light-green" value="J3"<?php if($id_detailukuran=='J3') echo 'checked'?>>
+                                    <label for="J3" class="m-l-20">J3</label>
+
+                                    <input type="radio" name="id_detailukuran" id="J4" class="with-gap radio-col-light-green" value="J4"<?php if($id_detailukuran=='J4') echo 'checked'?>>
+                                    <label for="J4" class="m-l-20">J4</label>
+
+                                    <input type="radio" name="id_detailukuran" id="J5" class="with-gap radio-col-light-green" value="J5"<?php if($id_detailukuran=='J5') echo 'checked'?>>
+                                    <label for="J5" class="m-l-20">J5</label>                                    
                                 </div>
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input type="text" class="form-control" name="fullname" value="<?php echo $nama;?>" required>
-                                        <label class="form-label">Nama Lengkap</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="text" class="form-control" name="no_hp" value="<?php echo $no_hp;?>" required>
-                                        <label class="form-label">No. HP</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <textarea name="alamat" cols="30" rows="5" class="form-control no-resize" required><?php echo $alamat;?></textarea>
-                                        <label class="form-label">Alamat</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="text" class="form-control" name="username" value="<?php echo $username;?>" required>
-                                        <label class="form-label">Username</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="password" class="form-control" name="password" value="<?php echo $password;?>" required>
-                                        <label class="form-label">Password</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="text" class="form-control" name="role" value="<?php echo $role;?>" required>
-                                        <label class="form-label">Role</label>
+                                        <input type="text" class="form-control" name="stok" value="<?php echo $stok;?>" required>
+                                        <label class="form-label">Stok</label>
                                     </div>
                                 </div>
                                 <button class="btn btn-primary waves-effect" type="submit" name="update">UPDATE</button>
-                                <a href="adminhome.php">
+                                <a href="baranghome.php">
                                     <button class="btn btn-danger waves-effect" type="button">CANCEL</button>
                                 </a>
                             </form>

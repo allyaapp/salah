@@ -12,33 +12,6 @@ $sesID = $_SESSION['id'];
 $sesName = $_SESSION['username'];
 $sesLvl = $_SESSION['role'];
 
-            if(isset($_POST['update']) ){
-                $id = $_POST['id_admin'];
-                $nama = $_POST['fullname'];
-                $no_hp = $_POST['no_hp'];
-                $alamat = $_POST['alamat'];
-                $username = $_POST['username'];
-                $password = $_POST['password'];
-                $role = $_POST['role'];
-
-                $query = "UPDATE admindetail SET fullname='$nama', no_hp='$no_hp', alamat='$alamat', username='$username', password='$password', role='$role' WHERE id_admin='$id'";
-                $result = mysqli_query($koneksi, $query);
-                header('Location: adminhome.php');
-            }
-
-            $id = $_GET['id'];
-            $query = "SELECT * FROM admindetail WHERE id_admin='$id'";
-            $result = mysqli_query($koneksi, $query) or die (mysql_error());
-            $no = 1;
-            while ($row = mysqli_fetch_array($result)){
-                $id = $row['id_admin'];
-                $nama = $row['fullname'];
-                $no_hp = $row['no_hp'];
-                $alamat = $row['alamat'];
-                $username = $row['username'];
-                $password = $row['password'];
-                $role = $row['role'];       
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -47,7 +20,7 @@ $sesLvl = $_SESSION['role'];
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Edit Admin's Data | SUGAR CANE</title>
+    <title>Our Product | SUGAR CANE</title>
     <!-- Favicon-->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
@@ -107,10 +80,13 @@ $sesLvl = $_SESSION['role'];
                             <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
                             <img class="img-profile rounded-circle" src="../images/user.png" width="70%" style="border-radius: 50px;">
                         </a>
+
                         <!-- Dropdown - User Information -->
-                        <ul class="dropdown-menu" style="border-radius: 5px;">
+                        <ul class="dropdown-menu">
                             <div class="dropdown-divider"></div>
                             <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="../logout.php"><i class="material-icons">input</i>Sign Out</a></li>
                             <div class="dropdown-divider"></div>
                         </ul>
                     </li>
@@ -134,8 +110,8 @@ $sesLvl = $_SESSION['role'];
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                        <li class="active">
-                            <a href="adminhome.php">
+                        <li>
+                            <a href="../admin/adminhome.php">
                                 <i class="material-icons">account_box</i>
                                 <span>Admins</span>
                             </a>
@@ -146,19 +122,19 @@ $sesLvl = $_SESSION['role'];
                                 <span>Users</span>
                             </a>
                         </li>
-                        <li>
+                        <li class="active">
                             <a href="javascript:void(0);" class="menu-toggle">
                                 <i class="material-icons">library_books</i>
                                 <span>Data Barang</span>
                             </a>
                             <ul class="ml-menu">
-                                <li>
-                                    <a href="../barang/baranghome.php">
+                                <li class="active">
+                                    <a href="baranghome.php">
                                         <span>Barang</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="../barang/detailbarang.php">
+                                    <a href="detailbarang.php">
                                         <span>Detail Ukuran</span>
                                     </a>
                                 </li>
@@ -177,7 +153,7 @@ $sesLvl = $_SESSION['role'];
                                 </li>
                                 <li>
                                     <a href="javascript:void(0);">
-                                        <span>Transaksi Lain</span>
+                                        <span>Transaksi 2</span>
                                     </a>
                                 </li>
                             </ul>
@@ -199,67 +175,90 @@ $sesLvl = $_SESSION['role'];
 
         <!-- Content -->
             <section class="content">
-            <!--  Validation -->
-            <div class="row clearfix">
+                <div class="container-fluid">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <h2>EDIT <?php echo $nama; ?>'s DATA</h2>
+                            <h2>
+                                DETAIL PRODUCTS
+                            </h2>
+                            <a href="barangcreate.php"> 
+                                <button type="button" class="btn bg-light-green waves-effect" style="border-radius: 3px;">
+                                    <i class="material-icons">create</i>
+                                    <span>Create Data</span>
+                                </button>
+                            </a>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
                         <div class="body">
-                            <form id="form_validation" method="POST">
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="text" class="form-control" name="id_admin" value="<?php echo $id;?>" required>
-                                        <label class="form-label">ID</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="text" class="form-control" name="fullname" value="<?php echo $nama;?>" required>
-                                        <label class="form-label">Nama Lengkap</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="text" class="form-control" name="no_hp" value="<?php echo $no_hp;?>" required>
-                                        <label class="form-label">No. HP</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <textarea name="alamat" cols="30" rows="5" class="form-control no-resize" required><?php echo $alamat;?></textarea>
-                                        <label class="form-label">Alamat</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="text" class="form-control" name="username" value="<?php echo $username;?>" required>
-                                        <label class="form-label">Username</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="password" class="form-control" name="password" value="<?php echo $password;?>" required>
-                                        <label class="form-label">Password</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="text" class="form-control" name="role" value="<?php echo $role;?>" required>
-                                        <label class="form-label">Role</label>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary waves-effect" type="submit" name="update">UPDATE</button>
-                                <a href="adminhome.php">
-                                    <button class="btn btn-danger waves-effect" type="button">CANCEL</button>
-                                </a>
-                            </form>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Varian</th>
+                                            <th>Ukuran</th>
+                                            <th>Detail Ukuran</th>
+                                            <th>Stok</th>
+                                            <th>Menu</th>
+                                        </tr>
+                                    </thead>
+                                    <?php 
+                                        $query = "SELECT * FROM barang";
+                                        $result = mysqli_query($koneksi, $query);
+                                        $no = 1;
+
+                                        if ($sesLvl == 1){
+                                            $dis = "";
+                                        } else {
+                                            $dis = "disabled";
+                                        }
+
+                                        while ($row = mysqli_fetch_array($result)){
+                                            $id = $row['id_barang'];
+                                            $varian = $row['varian'];
+                                            $ukuran = $row['ukuran'];
+                                            $detailukuran = $row['id_detailukuran'];
+                                            $stok = $row['stok'];
+                                    ?>
+                                    <tbody>
+                                        <tr>
+                                            <td><?php echo $no; ?></td>
+                                            <td><?php echo $varian; ?></td>
+                                            <td><?php echo $ukuran; ?></td>
+                                            <td><?php echo $detailukuran; ?></td>
+                                            <td><?php echo $stok; ?></td>
+                                            <td>
+                                                <a href="barangedit.php?id=<?php echo $row['id_barang']; ?>">
+                                                    <input type="button" class="btn btn-info" value="Edit" name="edit" <?php echo $dis; ?>>
+                                                </a>
+                                                <a href="barangdelete.php?id=<?php echo $row['id_barang']; ?>">
+                                                    <input type="button" class="btn btn-danger" value="Delete" name="delete" <?php echo $dis; ?>>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <?php 
+                                            $no++;
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- #END# Validation -->
+                </div>
             </section>
         <!-- #Content -->
 
@@ -297,7 +296,5 @@ $sesLvl = $_SESSION['role'];
     <!-- Demo Js -->
     <script src="../js/demo.js"></script>
 </body>
+
 </html>
-<?php 
-    }
-?>

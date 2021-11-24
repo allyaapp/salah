@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 23 Nov 2021 pada 23.57
+-- Waktu pembuatan: 24 Nov 2021 pada 12.48
 -- Versi server: 10.4.21-MariaDB
 -- Versi PHP: 7.4.25
 
@@ -56,9 +56,9 @@ INSERT INTO `admindetail` (`id_admin`, `fullname`, `no_hp`, `alamat`, `username`
 
 CREATE TABLE `barang` (
   `id_barang` int(11) NOT NULL,
-  `varian` enum('Coklat','Strawberry','Vanilla Oreo','') NOT NULL,
-  `ukuran` enum('Small','Large') NOT NULL,
-  `id_detailbarang` int(1) NOT NULL,
+  `varian` enum('Chocolate','Strawberry','VanillaOreo','') NOT NULL,
+  `ukuran` enum('Mini','Jumbo') NOT NULL,
+  `id_detailukuran` varchar(2) NOT NULL,
   `stok` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -66,11 +66,10 @@ CREATE TABLE `barang` (
 -- Dumping data untuk tabel `barang`
 --
 
-INSERT INTO `barang` (`id_barang`, `varian`, `ukuran`, `id_detailbarang`, `stok`) VALUES
-(1, 'Coklat', 'Small', 1, 100),
-(2, 'Coklat', 'Small', 2, 75),
-(3, 'Coklat', 'Small', 3, 80),
-(4, 'Coklat', 'Small', 4, 50);
+INSERT INTO `barang` (`id_barang`, `varian`, `ukuran`, `id_detailukuran`, `stok`) VALUES
+(1, 'Chocolate', 'Mini', 'M1', 100),
+(2, 'Chocolate', 'Mini', 'M2', 75),
+(11, 'Chocolate', 'Jumbo', 'J1', 50);
 
 -- --------------------------------------------------------
 
@@ -79,8 +78,8 @@ INSERT INTO `barang` (`id_barang`, `varian`, `ukuran`, `id_detailbarang`, `stok`
 --
 
 CREATE TABLE `detailbarang` (
-  `id_detailbarang` int(1) NOT NULL,
-  `varianukuran` varchar(4) NOT NULL,
+  `id_detailukuran` varchar(2) NOT NULL,
+  `varianukuran` varchar(5) NOT NULL,
   `harga` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -88,15 +87,15 @@ CREATE TABLE `detailbarang` (
 -- Dumping data untuk tabel `detailbarang`
 --
 
-INSERT INTO `detailbarang` (`id_detailbarang`, `varianukuran`, `harga`) VALUES
-(1, '2 oz', 3000),
-(2, '4 oz', 4000),
-(3, '5 oz', 5000),
-(4, '8 oz', 8000),
-(5, '12 o', 10000),
-(6, '16 o', 18000),
-(7, '26oz', 28000),
-(8, '32oz', 30000);
+INSERT INTO `detailbarang` (`id_detailukuran`, `varianukuran`, `harga`) VALUES
+('J1', '8 oz', 8000),
+('J2', '12 o', 10000),
+('J3', '16 o', 18000),
+('J4', '26oz', 28000),
+('J5', '32oz', 30000),
+('M1', '2 oz', 3000),
+('M2', '4 oz', 4000),
+('M3', '5 oz', 5000);
 
 -- --------------------------------------------------------
 
@@ -144,7 +143,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `fullname`, `alamat`, `no_hp`, `username`, `password`) VALUES
-(1, 'Nur Allya', 'Bali', '08123456789', 'allya', 'allya');
+(1, 'Nur Allya', 'Bali', '081234567898', 'allya', 'allya'),
+(3, 'Hani', 'Bali', '081234567812', 'hani', 'hani');
 
 --
 -- Indexes for dumped tables
@@ -161,13 +161,14 @@ ALTER TABLE `admindetail`
 --
 ALTER TABLE `barang`
   ADD PRIMARY KEY (`id_barang`),
-  ADD KEY `id_detailbarang` (`id_detailbarang`);
+  ADD KEY `id_detailbarang` (`id_detailukuran`),
+  ADD KEY `id_detailukuran` (`id_detailukuran`);
 
 --
 -- Indeks untuk tabel `detailbarang`
 --
 ALTER TABLE `detailbarang`
-  ADD PRIMARY KEY (`id_detailbarang`);
+  ADD PRIMARY KEY (`id_detailukuran`);
 
 --
 -- Indeks untuk tabel `detailpemesanan`
@@ -204,7 +205,7 @@ ALTER TABLE `admindetail`
 -- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaksi`
@@ -216,7 +217,7 @@ ALTER TABLE `transaksi`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -226,7 +227,7 @@ ALTER TABLE `user`
 -- Ketidakleluasaan untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  ADD CONSTRAINT `barang_ibfk_1` FOREIGN KEY (`id_detailbarang`) REFERENCES `detailbarang` (`id_detailbarang`);
+  ADD CONSTRAINT `barang_ibfk_1` FOREIGN KEY (`id_detailukuran`) REFERENCES `detailbarang` (`id_detailukuran`);
 
 --
 -- Ketidakleluasaan untuk tabel `detailpemesanan`

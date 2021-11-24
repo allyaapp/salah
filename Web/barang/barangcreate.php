@@ -12,34 +12,20 @@ $sesID = $_SESSION['id'];
 $sesName = $_SESSION['username'];
 $sesLvl = $_SESSION['role'];
 
-            if(isset($_POST['update']) ){
-                $id = $_POST['id_admin'];
-                $nama = $_POST['fullname'];
-                $no_hp = $_POST['no_hp'];
-                $alamat = $_POST['alamat'];
-                $username = $_POST['username'];
-                $password = $_POST['password'];
-                $role = $_POST['role'];
+if(isset ($_POST['create']) ){
+    $id = $_POST['id_barang'];
+    $varian = $_POST['varian'];
+    $ukuran = $_POST['ukuran'];
+    $id_detailukuran = $_POST['id_detailukuran'];
+    $stok = $_POST['stok'];
 
-                $query = "UPDATE admindetail SET fullname='$nama', no_hp='$no_hp', alamat='$alamat', username='$username', password='$password', role='$role' WHERE id_admin='$id'";
-                $result = mysqli_query($koneksi, $query);
-                header('Location: adminhome.php');
-            }
-
-            $id = $_GET['id'];
-            $query = "SELECT * FROM admindetail WHERE id_admin='$id'";
-            $result = mysqli_query($koneksi, $query) or die (mysql_error());
-            $no = 1;
-            while ($row = mysqli_fetch_array($result)){
-                $id = $row['id_admin'];
-                $nama = $row['fullname'];
-                $no_hp = $row['no_hp'];
-                $alamat = $row['alamat'];
-                $username = $row['username'];
-                $password = $row['password'];
-                $role = $row['role'];       
-
+    $query = "INSERT INTO barang VALUES ('', '$varian', '$ukuran', '$id_detailukuran', '$stok')";
+    $result = mysqli_query($koneksi, $query);
+    header('Location: baranghome.php');
+}
+  
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -47,7 +33,7 @@ $sesLvl = $_SESSION['role'];
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Edit Admin's Data | SUGAR CANE</title>
+    <title>Create Product's Data | SUGAR CANE</title>
     <!-- Favicon-->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
@@ -108,9 +94,11 @@ $sesLvl = $_SESSION['role'];
                             <img class="img-profile rounded-circle" src="../images/user.png" width="70%" style="border-radius: 50px;">
                         </a>
                         <!-- Dropdown - User Information -->
-                        <ul class="dropdown-menu" style="border-radius: 5px;">
+                        <ul class="dropdown-menu">
                             <div class="dropdown-divider"></div>
                             <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="../logout.php"><i class="material-icons">input</i>Sign Out</a></li>
                             <div class="dropdown-divider"></div>
                         </ul>
                     </li>
@@ -134,8 +122,8 @@ $sesLvl = $_SESSION['role'];
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                        <li class="active">
-                            <a href="adminhome.php">
+                        <li>
+                            <a href="../admin/adminhome.php">
                                 <i class="material-icons">account_box</i>
                                 <span>Admins</span>
                             </a>
@@ -146,19 +134,19 @@ $sesLvl = $_SESSION['role'];
                                 <span>Users</span>
                             </a>
                         </li>
-                        <li>
+                        <li class="active">
                             <a href="javascript:void(0);" class="menu-toggle">
                                 <i class="material-icons">library_books</i>
                                 <span>Data Barang</span>
                             </a>
                             <ul class="ml-menu">
-                                <li>
-                                    <a href="../barang/baranghome.php">
+                                <li class="active">
+                                    <a href="baranghome.php">
                                         <span>Barang</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="../barang/detailbarang.php">
+                                    <a href="detailbarang.php">
                                         <span>Detail Ukuran</span>
                                     </a>
                                 </li>
@@ -204,54 +192,73 @@ $sesLvl = $_SESSION['role'];
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <h2>EDIT <?php echo $nama; ?>'s DATA</h2>
+                            <h2>CREATE DATA</h2>
                         </div>
                         <div class="body">
-                            <form id="form_validation" method="POST">
+                            <form id="form_validation" action="barangcreate.php" method="POST">
+                                <!-- 
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input type="text" class="form-control" name="id_admin" value="<?php echo $id;?>" required>
+                                        <input type="text" class="form-control" name="id_barang">
                                         <label class="form-label">ID</label>
                                     </div>
+                                </div> -->
+                                <div class="form-group">
+                                    <label class="form-label">Varian Rasa</label><br>
+
+                                    <input type="radio" name="varian" value="Chocolate" id="chocolate" class="with-gap radio-col-light-green">
+                                    <label for="chocolate" class="m-l-20">Chocolate</label><br>
+
+                                    <input type="radio" name="varian" value="Strawberry" id="strawberry" class="with-gap radio-col-light-green">
+                                    <label for="strawberry" class="m-l-20">Strawberry</label><br>
+
+                                    <input type="radio" name="varian" value="VanillaOreo" id="vanillaoreo" class="with-gap radio-col-light-green">
+                                    <label for="vanillaoreo" class="m-l-20">VanillaOreo</label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Ukuran</label><br>
+
+                                    <input type="radio" name="ukuran" value="Mini" id="Mini" class="with-gap radio-col-light-green">
+                                    <label for="Mini" class="m-l-20">Mini</label><br>
+
+                                    <input type="radio" name="ukuran" value="Jumbo" id="Jumbo" class="with-gap radio-col-light-green">
+                                    <label for="Jumbo" class="m-l-20">Jumbo</label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">ID Detail Ukuran</label><br>
+
+                                    <input type="radio" name="id_detailukuran" value="M1" id="M1" class="with-gap radio-col-light-green">
+                                    <label for="M1" class="m-l-20">M1</label>
+
+                                    <input type="radio" name="id_detailukuran" value="M2" id="M2" class="with-gap radio-col-light-green">
+                                    <label for="M2" class="m-l-20">M2</label>
+
+                                    <input type="radio" name="id_detailukuran" value="M3" id="M3" class="with-gap radio-col-light-green">
+                                    <label for="M3" class="m-l-20">M3</label>
+
+                                    <input type="radio" name="id_detailukuran" value="J1" id="J1" class="with-gap radio-col-light-green">
+                                    <label for="J1" class="m-l-20">J1</label>
+
+                                    <input type="radio" name="id_detailukuran" value="J2" id="J2" class="with-gap radio-col-light-green">
+                                    <label for="J2" class="m-l-20">J2</label>
+
+                                    <input type="radio" name="id_detailukuran" value="J3" id="J3" class="with-gap radio-col-light-green">
+                                    <label for="J3" class="m-l-20">J3</label>
+
+                                    <input type="radio" name="id_detailukuran" value="J4" id="J4" class="with-gap radio-col-light-green">
+                                    <label for="J4" class="m-l-20">J4</label>
+
+                                    <input type="radio" name="id_detailukuran" value="J5" id="J5" class="with-gap radio-col-light-green">
+                                    <label for="J5" class="m-l-20">J5</label>
                                 </div>
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input type="text" class="form-control" name="fullname" value="<?php echo $nama;?>" required>
-                                        <label class="form-label">Nama Lengkap</label>
+                                        <input type="text" class="form-control" name="stok" required>
+                                        <label class="form-label">Stok</label>
                                     </div>
                                 </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="text" class="form-control" name="no_hp" value="<?php echo $no_hp;?>" required>
-                                        <label class="form-label">No. HP</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <textarea name="alamat" cols="30" rows="5" class="form-control no-resize" required><?php echo $alamat;?></textarea>
-                                        <label class="form-label">Alamat</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="text" class="form-control" name="username" value="<?php echo $username;?>" required>
-                                        <label class="form-label">Username</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="password" class="form-control" name="password" value="<?php echo $password;?>" required>
-                                        <label class="form-label">Password</label>
-                                    </div>
-                                </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="text" class="form-control" name="role" value="<?php echo $role;?>" required>
-                                        <label class="form-label">Role</label>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary waves-effect" type="submit" name="update">UPDATE</button>
-                                <a href="adminhome.php">
+                                <button class="btn btn-primary waves-effect" type="submit" name="create">CREATE</button>
+                                <a href="baranghome.php">
                                     <button class="btn btn-danger waves-effect" type="button">CANCEL</button>
                                 </a>
                             </form>
@@ -285,10 +292,8 @@ $sesLvl = $_SESSION['role'];
     <script src="../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
     <script src="../plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
     <script src="../plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
     <script src="../plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
     <script src="../plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
-    <script src="../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
 
     <!-- Custom Js -->
     <script src="../js/admin.js"></script>
@@ -298,6 +303,3 @@ $sesLvl = $_SESSION['role'];
     <script src="../js/demo.js"></script>
 </body>
 </html>
-<?php 
-    }
-?>
