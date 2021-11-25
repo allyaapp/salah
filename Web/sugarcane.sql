@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 24 Nov 2021 pada 12.48
--- Versi server: 10.4.21-MariaDB
--- Versi PHP: 7.4.25
+-- Generation Time: Nov 25, 2021 at 08:12 AM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 7.3.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `admindetail`
+-- Table structure for table `admindetail`
 --
 
 CREATE TABLE `admindetail` (
@@ -38,7 +38,7 @@ CREATE TABLE `admindetail` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `admindetail`
+-- Dumping data for table `admindetail`
 --
 
 INSERT INTO `admindetail` (`id_admin`, `fullname`, `no_hp`, `alamat`, `username`, `password`, `role`) VALUES
@@ -51,7 +51,7 @@ INSERT INTO `admindetail` (`id_admin`, `fullname`, `no_hp`, `alamat`, `username`
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `barang`
+-- Table structure for table `barang`
 --
 
 CREATE TABLE `barang` (
@@ -63,7 +63,7 @@ CREATE TABLE `barang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `barang`
+-- Dumping data for table `barang`
 --
 
 INSERT INTO `barang` (`id_barang`, `varian`, `ukuran`, `id_detailukuran`, `stok`) VALUES
@@ -74,7 +74,7 @@ INSERT INTO `barang` (`id_barang`, `varian`, `ukuran`, `id_detailukuran`, `stok`
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `detailbarang`
+-- Table structure for table `detailbarang`
 --
 
 CREATE TABLE `detailbarang` (
@@ -84,7 +84,7 @@ CREATE TABLE `detailbarang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `detailbarang`
+-- Dumping data for table `detailbarang`
 --
 
 INSERT INTO `detailbarang` (`id_detailukuran`, `varianukuran`, `harga`) VALUES
@@ -100,33 +100,48 @@ INSERT INTO `detailbarang` (`id_detailukuran`, `varianukuran`, `harga`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `detailpemesanan`
+-- Table structure for table `detailtransaksi`
 --
 
-CREATE TABLE `detailpemesanan` (
-  `id_detailpesanan` int(11) NOT NULL,
+CREATE TABLE `detailtransaksi` (
+  `id_detailtransaksi` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
   `id_barang` int(11) NOT NULL,
   `qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `detailtransaksi`
+--
+
+INSERT INTO `detailtransaksi` (`id_detailtransaksi`, `id_user`, `id_barang`, `qty`) VALUES
+(1, 1, 11, 5),
+(2, 3, 2, 4);
+
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `transaksi`
+-- Table structure for table `transaksi`
 --
 
 CREATE TABLE `transaksi` (
   `id_transaksi` int(5) NOT NULL,
-  `id_detailpesanan` int(5) NOT NULL,
+  `id_detailtransaksi` int(5) NOT NULL,
   `tgltransaksi` date NOT NULL,
   `total` varchar(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `transaksi`
+--
+
+INSERT INTO `transaksi` (`id_transaksi`, `id_detailtransaksi`, `tgltransaksi`, `total`) VALUES
+(1, 1, '2021-06-16', '25000');
+
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
@@ -139,7 +154,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `user`
+-- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id_user`, `fullname`, `alamat`, `no_hp`, `username`, `password`) VALUES
@@ -151,13 +166,13 @@ INSERT INTO `user` (`id_user`, `fullname`, `alamat`, `no_hp`, `username`, `passw
 --
 
 --
--- Indeks untuk tabel `admindetail`
+-- Indexes for table `admindetail`
 --
 ALTER TABLE `admindetail`
   ADD PRIMARY KEY (`id_admin`);
 
 --
--- Indeks untuk tabel `barang`
+-- Indexes for table `barang`
 --
 ALTER TABLE `barang`
   ADD PRIMARY KEY (`id_barang`),
@@ -165,82 +180,82 @@ ALTER TABLE `barang`
   ADD KEY `id_detailukuran` (`id_detailukuran`);
 
 --
--- Indeks untuk tabel `detailbarang`
+-- Indexes for table `detailbarang`
 --
 ALTER TABLE `detailbarang`
   ADD PRIMARY KEY (`id_detailukuran`);
 
 --
--- Indeks untuk tabel `detailpemesanan`
+-- Indexes for table `detailtransaksi`
 --
-ALTER TABLE `detailpemesanan`
-  ADD PRIMARY KEY (`id_detailpesanan`),
+ALTER TABLE `detailtransaksi`
+  ADD PRIMARY KEY (`id_detailtransaksi`),
   ADD KEY `id_user` (`id_user`,`id_barang`),
   ADD KEY `id_barang` (`id_barang`);
 
 --
--- Indeks untuk tabel `transaksi`
+-- Indexes for table `transaksi`
 --
 ALTER TABLE `transaksi`
   ADD PRIMARY KEY (`id_transaksi`),
-  ADD KEY `id_detailpesanan` (`id_detailpesanan`);
+  ADD KEY `id_detailpesanan` (`id_detailtransaksi`);
 
 --
--- Indeks untuk tabel `user`
+-- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id_user`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `admindetail`
+-- AUTO_INCREMENT for table `admindetail`
 --
 ALTER TABLE `admindetail`
   MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT untuk tabel `barang`
+-- AUTO_INCREMENT for table `barang`
 --
 ALTER TABLE `barang`
   MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT untuk tabel `transaksi`
+-- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_transaksi` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `user`
+-- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `barang`
+-- Constraints for table `barang`
 --
 ALTER TABLE `barang`
   ADD CONSTRAINT `barang_ibfk_1` FOREIGN KEY (`id_detailukuran`) REFERENCES `detailbarang` (`id_detailukuran`);
 
 --
--- Ketidakleluasaan untuk tabel `detailpemesanan`
+-- Constraints for table `detailtransaksi`
 --
-ALTER TABLE `detailpemesanan`
-  ADD CONSTRAINT `detailpemesanan_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`),
-  ADD CONSTRAINT `detailpemesanan_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`);
+ALTER TABLE `detailtransaksi`
+  ADD CONSTRAINT `detailtransaksi_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`),
+  ADD CONSTRAINT `detailtransaksi_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`);
 
 --
--- Ketidakleluasaan untuk tabel `transaksi`
+-- Constraints for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  ADD CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_detailpesanan`) REFERENCES `detailpemesanan` (`id_detailpesanan`);
+  ADD CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_detailtransaksi`) REFERENCES `detailtransaksi` (`id_detailtransaksi`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
