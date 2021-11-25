@@ -165,10 +165,22 @@ $sesLvl = $_SESSION['role'];
                             </ul>
                         </li>
                         <li>
-                            <a href="javascript:void(0);" class="menu-toggle">
+                        <a href="javascript:void(0);" class="menu-toggle">
                                 <i class="material-icons">assessment</i>
                                 <span>Transaksi</span>
                             </a>
+                            <ul class="ml-menu">
+                                <li>
+                                    <a href="../transaksi/transaksihome.php">
+                                        <span>Transaksi</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="../transaksi/detailtransaksi.php">
+                                        <span>Detail Transaksi</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </div>
                 </ul>
