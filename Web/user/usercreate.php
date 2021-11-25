@@ -158,13 +158,13 @@ if(isset ($_POST['create']) ){
                             </a>
                             <ul class="ml-menu">
                                 <li>
-                                    <a href="javascript:void(0);">
-                                        <span>Transaksi Selesai</span>
+                                    <a href="../transaksi/transaksihome.php">
+                                        <span>Transaksi</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0);">
-                                        <span>Transaksi Lain</span>
+                                    <a href="..transaksi/detailtransaksi.php">
+                                        <span>Detail Transaksi</span>
                                     </a>
                                 </li>
                             </ul>
